@@ -23,9 +23,32 @@ func main() {
 	// Get mongo database connection string from environment variable
 	mongoConnectionString := os.Getenv("MONGO_CONNECTION_STRING")
 
+	// If the connection string is empty panic
+	if mongoConnectionString == "" {
+		panic("MONGO_CONNECTION_STRING environment variable not set")
+	}
+
+	// Get the mongo db username from the environment variable
+	mongoUsername := os.Getenv("MONGO_USERNAME")
+
+	// If the username is empty panic
+	if mongoUsername == "" {
+		panic("MONGO_USERNAME environment variable not set")
+	}
+
+	// Get the mongo db password from the environment variable
+	mongoPassword := os.Getenv("MONGO_PASSWORD")
+
+	// If the password is empty panic
+	if mongoPassword == "" {
+		panic("MONGO_PASSWORD environment variable not set")
+	}
+
 	// Set up the MongoDB client
-	// client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://localhost:27017"))
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI(mongoConnectionString))
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI(mongoConnectionString).SetAuth(options.Credential{
+		Username: mongoUsername,
+		Password: mongoPassword,
+	}))
 
 	if err != nil {
 		log.Fatal(err)
