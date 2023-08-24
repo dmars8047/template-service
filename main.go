@@ -20,8 +20,12 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
+	// Get mongo database connection string from environment variable
+	mongoConnectionString := os.Getenv("MONGO_CONNECTION_STRING")
+
 	// Set up the MongoDB client
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://localhost:27017"))
+	// client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://localhost:27017"))
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI(mongoConnectionString))
 
 	if err != nil {
 		log.Fatal(err)
