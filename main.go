@@ -54,7 +54,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	templateDatabase := client.Database("template_service")
+	templateDatabase := client.Database("core")
 	templateCollection := templateDatabase.Collection("templates")
 
 	templateStore := NewMongoTemplateStore(templateCollection)
