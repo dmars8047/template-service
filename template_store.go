@@ -106,7 +106,8 @@ func (store *MongoTemplateStore) CreateTemplate(template *Template) error {
 		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
 
-		result, err := store.collection.InsertOne(ctx, bson.M{
+		_, err := store.collection.InsertOne(ctx, bson.M{
+			"_id":     template.Id,
 			"name":    template.Name,
 			"content": template.Content,
 			"format":  template.Format,
@@ -116,8 +117,6 @@ func (store *MongoTemplateStore) CreateTemplate(template *Template) error {
 		if err != nil {
 			return err
 		}
-
-		template.Id = result.InsertedID.(string)
 
 		return nil
 	} else {

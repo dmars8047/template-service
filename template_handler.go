@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 type TemplateHandler struct {
@@ -91,6 +92,7 @@ func (handler *TemplateHandler) CreateTemplate(c *gin.Context) {
 	}
 
 	template := Template{
+		Id:      uuid.New().String(),
 		Name:    request.Name,
 		Tokens:  request.Tokens,
 		Content: request.Content,
