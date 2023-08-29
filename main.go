@@ -44,18 +44,41 @@ func main() {
 		panic("MONGO_PASSWORD environment variable not set")
 	}
 
+	mongoDatabase := os.Getenv("MONGO_DATABASE")
+
+	if mongoDatabase == "" {
+		panic("MONGO_DATABASE environment variable not set")
+	}
+
+	mongoCollection := os.Getenv("MONGO_COLLECTION")
+
+	if mongoCollection == "" {
+		panic("MONGO_COLLECTION environment variable not set")
+	}
+
 	// Set up the MongoDB client
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(mongoConnectionString).SetAuth(options.Credential{
-		Username: mongoUsername,
-		Password: mongoPassword,
+		Username:   mongoUsername,
+		Password:   mongoPassword,
+		AuthSource: mongoDatabase,
 	}))
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	templateDatabase := client.Database("core")
-	templateCollection := templateDatabase.Collection("templates")
+	// Ping the MongoDB server to check if the connection was successful
+	err = client.Ping(ctx, nil)
+
+	if err != nil {
+		fmt.Println("Error pinging MongoDB:", err)
+		return
+	}
+
+	fmt.Println("Connected to MongoDB!")
+
+	templateDatabase := client.Database(mongoDatabase)
+	templateCollection := templateDatabase.Collection(mongoCollection)
 
 	templateStore := NewMongoTemplateStore(templateCollection)
 

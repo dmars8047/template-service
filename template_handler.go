@@ -42,7 +42,7 @@ func (handler *TemplateHandler) GetAllTemplates(c *gin.Context) {
 
 	// If there was an error, return it to the client
 	if err != nil {
-		c.JSON(500, gin.H{"error": "An unexpected error occurred when retrieveing templates with name"})
+		c.JSON(500, gin.H{"error": "An unexpected error occurred when retrieveing templates"})
 		return
 	}
 
