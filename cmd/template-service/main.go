@@ -10,6 +10,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+
+	"github.com/dmars8047/template-service/api"
 )
 
 func main() {
@@ -80,9 +82,9 @@ func main() {
 	templateDatabase := client.Database(mongoDatabase)
 	templateCollection := templateDatabase.Collection(mongoCollection)
 
-	templateStore := NewMongoTemplateStore(templateCollection)
+	templateStore := api.NewMongoTemplateStore(templateCollection)
 
-	templateHandler := &TemplateHandler{store: templateStore}
+	templateHandler := api.NewTemplateHandler(templateStore)
 
 	if err != nil {
 		log.Fatal(err)

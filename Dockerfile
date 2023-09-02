@@ -15,7 +15,7 @@ COPY . .
 RUN go test ./...
 
 # Build the application
-RUN go build -o template-service
+RUN go build -o /app/template-service ./cmd/template-service
 
 # Start a new stage with a minimal image
 FROM scratch

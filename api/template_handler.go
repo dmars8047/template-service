@@ -1,4 +1,4 @@
-package main
+package api
 
 import (
 	"fmt"
@@ -10,6 +10,10 @@ import (
 
 type TemplateHandler struct {
 	store TemplateStore
+}
+
+func NewTemplateHandler(store TemplateStore) *TemplateHandler {
+	return &TemplateHandler{store: store}
 }
 
 func (handler *TemplateHandler) GetTemplate(c *gin.Context) {
