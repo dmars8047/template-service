@@ -1,4 +1,4 @@
-package main
+package sdk
 
 type Template struct {
 	Id      string   `json:"id" bson:"_id"`

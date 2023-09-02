@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"github.com/dmars8047/template-service/sdk"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
@@ -91,7 +92,7 @@ func (handler *TemplateHandler) CreateTemplate(c *gin.Context) {
 		request.Tokens = []string{}
 	}
 
-	template := Template{
+	template := sdk.Template{
 		Id:      uuid.New().String(),
 		Name:    request.Name,
 		Tokens:  request.Tokens,

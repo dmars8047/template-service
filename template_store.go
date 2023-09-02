@@ -4,15 +4,16 @@ import (
 	"context"
 	"time"
 
+	"github.com/dmars8047/template-service/sdk"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type TemplateStore interface {
-	GetAllTemplates(name string) ([]Template, error)
-	GetTemplateById(templateId string) (*Template, error)
-	GetTemplatebyName(templateName string) (*Template, error)
-	CreateTemplate(template *Template) error
+	GetAllTemplates(name string) ([]sdk.Template, error)
+	GetTemplateById(templateId string) (*sdk.Template, error)
+	GetTemplatebyName(templateName string) (*sdk.Template, error)
+	CreateTemplate(template *sdk.Template) error
 	DeleteTemplate(templateId string) error
 }
 
@@ -24,14 +25,14 @@ func NewMongoTemplateStore(collection *mongo.Collection) *MongoTemplateStore {
 	return &MongoTemplateStore{collection: collection}
 }
 
-func (store *MongoTemplateStore) GetAllTemplates(name string) ([]Template, error) {
+func (store *MongoTemplateStore) GetAllTemplates(name string) ([]sdk.Template, error) {
 	filter := bson.M{}
 
 	if name != "" {
 		filter["name"] = name
 	}
 
-	var results []Template = make([]Template, 0)
+	var results []sdk.Template = make([]sdk.Template, 0)
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -51,10 +52,10 @@ func (store *MongoTemplateStore) GetAllTemplates(name string) ([]Template, error
 	return results, nil
 }
 
-func (store *MongoTemplateStore) GetTemplateById(templateId string) (*Template, error) {
+func (store *MongoTemplateStore) GetTemplateById(templateId string) (*sdk.Template, error) {
 	filter := bson.M{"_id": templateId}
 
-	var result Template
+	var result sdk.Template
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -72,10 +73,10 @@ func (store *MongoTemplateStore) GetTemplateById(templateId string) (*Template, 
 	return &result, nil
 }
 
-func (store *MongoTemplateStore) GetTemplatebyName(templateName string) (*Template, error) {
+func (store *MongoTemplateStore) GetTemplatebyName(templateName string) (*sdk.Template, error) {
 	filter := bson.M{"name": templateName}
 
-	var result Template
+	var result sdk.Template
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -93,7 +94,7 @@ func (store *MongoTemplateStore) GetTemplatebyName(templateName string) (*Templa
 	return &result, nil
 }
 
-func (store *MongoTemplateStore) CreateTemplate(template *Template) error {
+func (store *MongoTemplateStore) CreateTemplate(template *sdk.Template) error {
 	// Make sure a template with the same name doesn't already exist
 	_, err := store.GetTemplatebyName(template.Name)
 
