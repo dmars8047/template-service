@@ -3,7 +3,7 @@ package api
 import (
 	"fmt"
 
-	"github.com/dmars8047/marshall-labs-common/templates"
+	tmpl "github.com/dmars8047/marshall-labs-common/templates"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
@@ -57,7 +57,7 @@ func (handler *TemplateHandler) GetAllTemplates(c *gin.Context) {
 
 func (handler *TemplateHandler) CreateTemplate(c *gin.Context) {
 	// Get the request body
-	var request templates.TemplateCreateRequest
+	var request tmpl.TemplateCreateRequest
 	err := c.BindJSON(&request)
 
 	// If there was an error, return bad request
@@ -89,7 +89,7 @@ func (handler *TemplateHandler) CreateTemplate(c *gin.Context) {
 		request.Tokens = []string{}
 	}
 
-	template := templates.Template{
+	template := tmpl.Template{
 		Id:      uuid.New().String(),
 		Name:    request.Name,
 		Tokens:  request.Tokens,
