@@ -66,7 +66,8 @@ func main() {
 	}))
 
 	if err != nil {
-		log.Fatal(err)
+		log.Println("Error connecting to MongoDB:", err)
+		panic(err)
 	}
 
 	// Ping the MongoDB server to check if the connection was successful
@@ -82,9 +83,9 @@ func main() {
 	templateDatabase := client.Database(mongoDatabase)
 	templateCollection := templateDatabase.Collection(mongoCollection)
 
-	templateStore := api.NewMongoTemplateStore(templateCollection)
+	templateStore := api.NewMongoEmailTemplateStore(templateCollection)
 
-	templateHandler := api.NewTemplateHandler(templateStore)
+	emailTemplateHandler := api.NewEmailTemplateHandler(templateStore)
 
 	if err != nil {
 		log.Fatal(err)
@@ -94,10 +95,9 @@ func main() {
 	router := gin.Default()
 
 	// Add the route handlers
-	router.GET("/api/templates", templateHandler.GetAllTemplates)
-	router.GET("/api/templates/:template_id", templateHandler.GetTemplate)
-	router.POST("/api/templates", templateHandler.CreateTemplate)
-	router.DELETE("/api/templates/:template_id", templateHandler.DeleteTemplate)
+	router.GET("/api/email-templates/:template_id", emailTemplateHandler.GetTemplate)
+	router.POST("/api/email-templates", emailTemplateHandler.CreateTemplate)
+	router.DELETE("/api/email-templates/:template_id", emailTemplateHandler.DeleteTemplate)
 
 	router.Run(":8080")
 }
