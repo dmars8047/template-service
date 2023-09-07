@@ -16,10 +16,10 @@ func NewEmailTemplateHandler(store EmailTemplateStore) *EmailTemplateHandler {
 	return &EmailTemplateHandler{store: store}
 }
 
-func (handler *EmailTemplateHandler) RegisterRoutes(router *gin.RouterGroup) {
-	router.GET("/email-templates/:template_id", handler.getTemplate)
-	router.POST("/email-templates", handler.createTemplate)
-	router.DELETE("/email-templates/:template_id", handler.deleteTemplate)
+func (handler *EmailTemplateHandler) RegisterRoutes(router *gin.Engine) {
+	router.GET("/api/email-templates/:template_id", handler.getTemplate)
+	router.POST("/api/email-templates", handler.createTemplate)
+	router.DELETE("/api/email-templates/:template_id", handler.deleteTemplate)
 }
 
 // Gets an email template by id
