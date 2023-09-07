@@ -94,7 +94,7 @@ func main() {
 	router := gin.Default()
 
 	// Register the routes
-	emailTemplateHandler.RegisterRoutes(router.Group("/api"))
+	emailTemplateHandler.RegisterRoutes(router)
 
 	router.Run(":8080")
 }
