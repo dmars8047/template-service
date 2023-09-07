@@ -3,7 +3,7 @@ package api
 import (
 	"fmt"
 
-	tmpl "github.com/dmars8047/marshall-labs-common/templates"
+	"github.com/dmars8047/templates"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
@@ -16,13 +16,19 @@ func NewEmailTemplateHandler(store EmailTemplateStore) *EmailTemplateHandler {
 	return &EmailTemplateHandler{store: store}
 }
 
+func (handler *EmailTemplateHandler) RegisterRoutes(router *gin.RouterGroup) {
+	router.GET("/email-templates/:template_id", handler.getTemplate)
+	router.POST("/email-templates", handler.createTemplate)
+	router.DELETE("/email-templates/:template_id", handler.deleteTemplate)
+}
+
 // Gets an email template by id
-func (handler *EmailTemplateHandler) GetTemplate(c *gin.Context) {
+func (handler *EmailTemplateHandler) getTemplate(c *gin.Context) {
 	// Get the requested template id from the route value :template_id
 	var requestedTemplateId = c.Param("template_id")
 
 	// Get the template from the store
-	template, err := handler.store.GetEmailTemplate(requestedTemplateId)
+	template, err := handler.store.getEmailTemplate(requestedTemplateId)
 
 	// If there was an error, return it to the client
 	if err != nil {
@@ -40,9 +46,9 @@ func (handler *EmailTemplateHandler) GetTemplate(c *gin.Context) {
 }
 
 // Creates an email template
-func (handler *EmailTemplateHandler) CreateTemplate(c *gin.Context) {
+func (handler *EmailTemplateHandler) createTemplate(c *gin.Context) {
 	// Get the request body
-	var request tmpl.EmailTemplateCreateRequest
+	var request templates.EmailTemplateCreateRequest
 	err := c.BindJSON(&request)
 
 	// If there was an error, return bad request
@@ -98,7 +104,7 @@ func (handler *EmailTemplateHandler) CreateTemplate(c *gin.Context) {
 		request.Tokens = []string{}
 	}
 
-	template := tmpl.EmailTemplate{
+	template := templates.EmailTemplate{
 		Id:               uuid.New().String(),
 		Name:             request.Name,
 		Tokens:           request.Tokens,
@@ -108,7 +114,7 @@ func (handler *EmailTemplateHandler) CreateTemplate(c *gin.Context) {
 	}
 
 	// Get the template from the store
-	err = handler.store.CreateEmailTemplate(&template)
+	err = handler.store.createEmailTemplate(&template)
 
 	// If there was an error, return it to the client
 	if err != nil {
@@ -126,12 +132,12 @@ func (handler *EmailTemplateHandler) CreateTemplate(c *gin.Context) {
 }
 
 // Deletes an email template by id
-func (handler *EmailTemplateHandler) DeleteTemplate(c *gin.Context) {
+func (handler *EmailTemplateHandler) deleteTemplate(c *gin.Context) {
 	// Get the requested template id from the route value :template_id
 	var requestedTemplateId = c.Param("template_id")
 
 	// Get the template from the store
-	err := handler.store.DeleteEmailTemplate(requestedTemplateId)
+	err := handler.store.deleteEmailTemplate(requestedTemplateId)
 
 	// If there was an error, return it to the client
 	if err != nil {

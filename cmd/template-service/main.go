@@ -7,11 +7,10 @@ import (
 	"os"
 	"time"
 
+	"github.com/dmars8047/template-service/internal/api"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-
-	"github.com/dmars8047/template-service/api"
 )
 
 func main() {
@@ -94,10 +93,8 @@ func main() {
 	// Initialize the router
 	router := gin.Default()
 
-	// Add the route handlers
-	router.GET("/api/email-templates/:template_id", emailTemplateHandler.GetTemplate)
-	router.POST("/api/email-templates", emailTemplateHandler.CreateTemplate)
-	router.DELETE("/api/email-templates/:template_id", emailTemplateHandler.DeleteTemplate)
+	// Register the routes
+	emailTemplateHandler.RegisterRoutes(router.Group("/api"))
 
 	router.Run(":8080")
 }

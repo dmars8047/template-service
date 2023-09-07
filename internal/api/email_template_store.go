@@ -4,15 +4,15 @@ import (
 	"context"
 	"time"
 
-	tmpl "github.com/dmars8047/marshall-labs-common/templates"
+	"github.com/dmars8047/templates"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type EmailTemplateStore interface {
-	GetEmailTemplate(templateId string) (*tmpl.EmailTemplate, error)
-	CreateEmailTemplate(template *tmpl.EmailTemplate) error
-	DeleteEmailTemplate(templateId string) error
+	getEmailTemplate(templateId string) (*templates.EmailTemplate, error)
+	createEmailTemplate(template *templates.EmailTemplate) error
+	deleteEmailTemplate(templateId string) error
 }
 
 type MongoEmailTemplateStore struct {
@@ -23,10 +23,10 @@ func NewMongoEmailTemplateStore(collection *mongo.Collection) *MongoEmailTemplat
 	return &MongoEmailTemplateStore{collection: collection}
 }
 
-func (store *MongoEmailTemplateStore) GetEmailTemplate(templateId string) (*tmpl.EmailTemplate, error) {
+func (store *MongoEmailTemplateStore) getEmailTemplate(templateId string) (*templates.EmailTemplate, error) {
 	filter := bson.M{"_id": templateId}
 
-	var result tmpl.EmailTemplate
+	var result templates.EmailTemplate
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -44,10 +44,10 @@ func (store *MongoEmailTemplateStore) GetEmailTemplate(templateId string) (*tmpl
 	return &result, nil
 }
 
-func (store *MongoEmailTemplateStore) GetEmailTemplateByName(templateName string) (*tmpl.EmailTemplate, error) {
+func (store *MongoEmailTemplateStore) getEmailTemplateByName(templateName string) (*templates.EmailTemplate, error) {
 	filter := bson.M{"name": templateName}
 
-	var result tmpl.EmailTemplate
+	var result templates.EmailTemplate
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -65,9 +65,9 @@ func (store *MongoEmailTemplateStore) GetEmailTemplateByName(templateName string
 	return &result, nil
 }
 
-func (store *MongoEmailTemplateStore) CreateEmailTemplate(template *tmpl.EmailTemplate) error {
+func (store *MongoEmailTemplateStore) createEmailTemplate(template *templates.EmailTemplate) error {
 	// Make sure a template with the same name doesn't already exist
-	_, err := store.GetEmailTemplateByName(template.Name)
+	_, err := store.getEmailTemplateByName(template.Name)
 
 	if err == nil {
 		return ErrNameConflict
@@ -97,7 +97,7 @@ func (store *MongoEmailTemplateStore) CreateEmailTemplate(template *tmpl.EmailTe
 	}
 }
 
-func (store *MongoEmailTemplateStore) DeleteEmailTemplate(templateId string) error {
+func (store *MongoEmailTemplateStore) deleteEmailTemplate(templateId string) error {
 	filter := bson.M{"_id": templateId}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)

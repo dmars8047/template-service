@@ -3,7 +3,7 @@ module github.com/dmars8047/template-service
 go 1.20
 
 require (
-	github.com/dmars8047/marshall-labs-common v1.0.7
+	github.com/dmars8047/templates v1.0.1
 	github.com/gin-gonic/gin v1.9.1
 	github.com/google/uuid v1.3.1
 	go.mongodb.org/mongo-driver v1.12.1
