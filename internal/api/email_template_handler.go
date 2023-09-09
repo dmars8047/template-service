@@ -95,7 +95,7 @@ func (handler *EmailTemplateHandler) createTemplate(c *gin.Context) {
 
 	// Make sure that the subject is under 78 characters
 	if len(request.Subject) > 78 {
-		c.JSON(400, gin.H{"error": "Subject must be under 78 characters"})
+		c.JSON(400, gin.H{"error": "Subject must be under 79 characters"})
 		return
 	}
 

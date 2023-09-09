@@ -79,12 +79,12 @@ func (store *MongoEmailTemplateStore) createEmailTemplate(template *templates.Em
 		defer cancel()
 
 		_, err := store.collection.InsertOne(ctx, bson.M{
-			"_id":                template.Id,
-			"name":               template.Name,
-			"html_content":       template.HtmlContent,
-			"plain_text_content": template.PlainTextContent,
-			"subject":            template.Subject,
-			"tokens":             template.Tokens,
+			"_id":              template.Id,
+			"name":             template.Name,
+			"htmlContent":      template.HtmlContent,
+			"plainTextContent": template.PlainTextContent,
+			"subject":          template.Subject,
+			"tokens":           template.Tokens,
 		})
 
 		if err != nil {
