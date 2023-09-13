@@ -101,7 +101,7 @@ func (handler *EmailTemplateHandler) createTemplate(c *gin.Context) {
 
 	// if the tokens are empty, set it to an empty array
 	if request.Tokens == nil {
-		request.Tokens = []string{}
+		request.Tokens = []templates.Token{}
 	}
 
 	template := templates.EmailTemplate{
