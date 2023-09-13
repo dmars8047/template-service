@@ -9,6 +9,8 @@ import (
 
 	"github.com/dmars8047/template-service/internal/api"
 	"github.com/gin-gonic/gin"
+
+	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -16,6 +18,18 @@ import (
 func main() {
 	fmt.Println("Starting Template Service...")
 	fmt.Printf("Arg count: %d\n", len(os.Args))
+
+	// Check the args to see if we should run in debug mode
+	if len(os.Args) > 1 && os.Args[1] == "debug" {
+		fmt.Println("Running in debug mode")
+		gin.SetMode(gin.DebugMode)
+		// Load environment variables from the .env file
+		if err := godotenv.Load("debug.env"); err != nil {
+			log.Fatalf("Error loading .env file: %v", err)
+		}
+	} else {
+		gin.SetMode(gin.ReleaseMode)
+	}
 
 	// setup a context with a 5 second timeout
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
