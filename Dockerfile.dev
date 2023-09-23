@@ -1,4 +1,5 @@
-FROM golang:1.20.5-alpine
+# Use the golden golang alpine image as the base image
+FROM dmars8047/golang-alpine-golden:latest-develop
 
 EXPOSE 8080 4000
 
