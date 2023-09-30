@@ -98,7 +98,7 @@ func main() {
 
 	templateStore := api.NewMongoEmailTemplateStore(templateCollection)
 
-	emailTemplateHandler := api.NewEmailTemplateHandler(templateStore)
+	emailTemplateHandler := api.NewEmailTemplateHandler(templateStore, templateStore, templateStore)
 
 	if err != nil {
 		log.Fatal(err)
