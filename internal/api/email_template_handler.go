@@ -3,7 +3,7 @@ package api
 import (
 	"fmt"
 
-	"github.com/dmars8047/templates"
+	"github.com/dmars8047/template-service/pkg/templates"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )

@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/dmars8047/templates"
+	"github.com/dmars8047/template-service/pkg/templates"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
